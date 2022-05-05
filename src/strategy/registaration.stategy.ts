@@ -24,10 +24,10 @@ export class RegistartionStrategy extends PassportStrategy(Strategy, 'create') {
      
       if (valid.errors !== null) {
         throw new HttpException({
-          errors: ['Errors in the sent data'],
+          errors: valid.errors,
           user: null,
           message: 'Need authorization',
-        }, HttpStatus.BAD_REQUEST);
+        }, HttpStatus.UNAUTHORIZED);
       }
 
       const user = {

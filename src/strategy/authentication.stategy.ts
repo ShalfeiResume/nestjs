@@ -10,13 +10,13 @@ export class AuthenticationStrategy extends PassportStrategy(Strategy, 'auth') {
     super({ usernameField: 'login' });
   }
   async validate(login: string, password: string): Promise<RequestGetingUserDto> {
-      const user = await this.userService.validateAuthorizationUser({login, password});
-      if (user.errors !== null) {
+      const valid = await this.userService.validateAuthorizationUser({login, password});
+      if (valid.errors !== null) {
         throw new HttpException({
-          errors: ['Errors in the sent data'],
+          errors: valid.errors,
           user: null,
           message: 'Need authorization',
-        }, HttpStatus.BAD_REQUEST);
+        }, HttpStatus.UNAUTHORIZED);
       }
       return {login};
   }

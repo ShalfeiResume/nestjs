@@ -14,10 +14,10 @@ export class JwtStrategy extends PassportStrategy(Strategy,'jwt') {
                 const data = request?.cookies["auth-cookie"];
                 if(!data){
                   throw new HttpException({
-                    errors: ['Errors in the sent data'],
+                    errors: {tokenError: 'Error token'},
                     user: null,
                     message: 'Need authorization',
-                  }, HttpStatus.BAD_REQUEST);
+                  }, HttpStatus.UNAUTHORIZED);
                 }
                 return data.token
             }])
@@ -27,10 +27,10 @@ export class JwtStrategy extends PassportStrategy(Strategy,'jwt') {
     async validate(payload: RequestGetingUserDto){
         if(payload === null){
           throw new HttpException({
-            errors: ['Errors in the sent data'],
+            errors: {tokenError: 'Error token'},
             user: null,
             message: 'Need authorization',
-          }, HttpStatus.BAD_REQUEST);
+          }, HttpStatus.UNAUTHORIZED);
         }
         return {
           login: payload?.login
